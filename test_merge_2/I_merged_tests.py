@@ -60,3 +60,4 @@ def test_large_input():
     A = [1] * 1000
     expected = 0 if len(A) % 2 == 0 else 1
     assert remaining_elements_count(A) == expected
+
