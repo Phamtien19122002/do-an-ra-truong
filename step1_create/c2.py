@@ -7,7 +7,7 @@ client = OpenAI(api_key=OPENAI_API_KEY)
 
 spec = (
     "Cho dãy số A[] chỉ bao gồm các số nguyên dương. Người ta thu gọn dần dãy số bằng cách loại "
-    "bỏ các cặp phần tử kề nhau mà có tổng là chẵn. Sau khi cặp phần tử đó bị loại ra thì dãy "
+    "bỏ các cặp phần tử kề nhau mà có tổng là chẵn. Sau khi cặp phần tử đó bị loại ra thì dã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y "
     "số được dồn lại. Cứ tiếp tục như vậy cho đến khi không còn cặp phần tử nào kề nhau có tổng chẵn nữa. "
     "Hãy tính xem cuối cùng dãy A[] còn bao nhiêu phần tử. \n"
     "Input N số của dãy A (1 ≤ A[i] ≤ 100, 1 ≤ N ≤ 10^5). \n"
