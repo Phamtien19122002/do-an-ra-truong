@@ -67,7 +67,7 @@ if __name__ == "__main__":
         test_message = generate_test_from_spec(spec)
         extracted_code = extract_code(test_message.content)
         
-        with open("promptOpenAI/test_spec/test_spec.py", "w", encoding="utf-8") as file:
+        with open("spec_TC/test_spec.py", "w", encoding="utf-8") as file:
             file.write(extracted_code)
         
         print("Test script successfully written to test_spec.py")
