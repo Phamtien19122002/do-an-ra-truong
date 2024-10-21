@@ -116,9 +116,9 @@ def write_merged_tests(imports, test_functions, output_file):
 
 def main():
     # Define file paths
-    test_file1 = 'I_code_test.py'
-    test_file2 = 'I_spec_test.py'
-    output_file = 'I_merged_tests.py'
+    test_file1 = 'II_code_test.py'
+    test_file2 = 'II_spec_test.py'
+    output_file = 'II_merged_tests.py'
 
     # Check if input files exist
     if not os.path.exists(test_file1):
