@@ -1,9 +1,7 @@
 import re
 from openai import OpenAI
-from code.code0101 import remaining_elements_count
 
-OPENAI_API_KEY = "sk-VejmkyzPYfciV99g9Mkr2Ihq4LEnXNA3gmMJLE-Jc9T3BlbkFJFQtfBgdCs5BpJYzFiOI3hZbT_BDAebratkSa2MW6sA"
-client = OpenAI(api_key=OPENAI_API_KEY)
+client = OpenAI(api_key="")
 
 spec = (
     "Cho dãy số A[] chỉ bao gồm các số nguyên dương. Người ta thu gọn dần dãy số bằng cách loại "
