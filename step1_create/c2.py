@@ -2,7 +2,7 @@ import re
 from openai import OpenAI
 import time
 
-OPENAI_API_KEY = "sk-vKpGkOlE16Hy9ejpSnhEOUNUDlwcaOZXbfkHXUKD5XT3BlbkFJPHnQcAUjyPmy52geuUKspLhN9T5qS7hJolVZcvRl8A"
+OPENAI_API_KEY = "sk-..."
 client = OpenAI(api_key = OPENAI_API_KEY)
 
 spec = (
