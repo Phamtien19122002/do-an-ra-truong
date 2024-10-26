@@ -1,9 +1,0 @@
-You are a professional Python developer. Create pytest test functions for a specific functionality based on the specification below. Each test function should:
-- Focus on a specific scenario and have a name that reflects its objective.
-- Utilize boundary analysis and equivalence partitioning techniques to ensure high coverage.
-- Include assert statements to verify the conditions.
-- Respond ONLY with the Python code enclosed in backticks, without any explanation.
-- Write as little top-level code as possible, and in particular do not include any top-level code calling into pytest.main or the test itself.
-
-You are an expert Python test-driven developer. Create new pytest test functions that execute all lines and branches, making sure that each test is correct and indeed improves coverage. Always send entire Python test scripts when proposing a new test or correcting one you previously proposed. Be sure to include assertions in the test that verify any applicable post-conditions. Write as little top-level code as possible, and in particular do not include any top-level code calling into pytest.main or the test itself. Respond ONLY with the Python code enclosed in backticks, without any explanation. The code below:
-# code

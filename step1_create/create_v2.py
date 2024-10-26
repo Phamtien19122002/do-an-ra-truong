@@ -2,7 +2,7 @@ import re
 from openai import OpenAI
 import time
 
-OPENAI_API_KEY = "sk-vKpGkOlE16Hy9ejpSnhEOUNUDlwcaOZXbfkHXUKD5XT3BlbkFJPHnQcAUjyPmy52geuUKspLhN9T5qS7hJolVZcvRl8A"
+OPENAI_API_KEY = "sk-QPnj8bbqvqbuA3vXjBhdr3FEUmDPECbDfdQa_K-5bsT3BlbkFJ4IQtxOpfPTjShopVPhFoCfZoGvpqolCRi8L8F-lj4A"
 client = OpenAI(api_key = OPENAI_API_KEY)
 
 spec = (
@@ -78,19 +78,18 @@ if __name__ == "__main__":
         test_spec = generate_test_from_spec(spec)
         print(test_spec)
         extracted_spec = extract_code(test_spec.content)
-        with open("spec_TC/tc0101_spec.py", "w", encoding="utf-8") as file:
+        with open("TC_spec/test_0101_spec.py", "w", encoding="utf-8") as file:
             file.write(extracted_spec)
-        print("Test script successfully written to tc0101_spec.py")
+        print("Test script successfully written to spec.py")
 
-        print("/n")
-        time.sleep(30)
+        print("-------------------------------------------")
 
         test_code = generate_test_from_code(code)
         print(test_code)
         extracted_code = extract_code(test_code.content)
-        with open("code_TC/tc0101_code.py", "w", encoding="utf-8") as file:
+        with open("TC_code/test_0101_code.py", "w", encoding="utf-8") as file:
             file.write(extracted_code)
-        print("Test script successfully written to tc0101.py")
+        print("Test script successfully written to code.py")
 
     except Exception as e:
         print(f"An error occurred: {e}")

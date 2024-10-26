@@ -19,31 +19,31 @@ def test_single_element():
     assert remaining_elements_count([1]) == 1
 
 def test_two_even_elements():
-    assert remaining_elements_count([2, 4]) == 2
+    assert remaining_elements_count([2, 4]) == 0
 
 def test_two_odd_elements():
-    assert remaining_elements_count([1, 3]) == 2
+    assert remaining_elements_count([1, 3]) == 0
 
 def test_even_and_odd_elements_non_cancelling():
     assert remaining_elements_count([2, 1]) == 2
 
 def test_even_and_odd_elements_cancelling():
-    assert remaining_elements_count([2, 3]) == 1
+    assert remaining_elements_count([2, 3]) == 2
 
 def test_multiple_elements_cancelling():
-    assert remaining_elements_count([1, 2, 3, 4]) == 2
+    assert remaining_elements_count([1, 2, 3, 4]) == 4
 
 def test_large_sequence_with_cancelling():
-    assert remaining_elements_count([1, 2, 1, 2, 1, 2]) == 3
+    assert remaining_elements_count([1, 2, 1, 2, 1, 2]) == 6
 
 def test_large_sequence_without_cancelling():
-    assert remaining_elements_count([1, 1, 1, 1, 1, 1]) == 6
+    assert remaining_elements_count([1, 1, 1, 1, 1, 1]) == 0
 
 def test_alternating_even_and_odd():
-    assert remaining_elements_count([1, 2, 1, 2, 1]) == 3
+    assert remaining_elements_count([1, 2, 1, 2, 1]) == 5
 
 def test_large_even_sequence():
-    assert remaining_elements_count([2] * 1000) == 1000
+    assert remaining_elements_count([2] * 1000) == 0
 
 def test_large_odd_sequence():
-    assert remaining_elements_count([1] * 1000) == 1000
+    assert remaining_elements_count([1] * 1000) == 0

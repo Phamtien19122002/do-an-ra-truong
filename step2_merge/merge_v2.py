@@ -1,12 +1,7 @@
-import ast
-import os
-import hashlib
+import ast, os, hashlib
 
+# Normalizes an assertion node by replacing numeric and string literals with placeholders. Returns the normalized assertion code as a string.
 def normalize_assertion(node):
-    """
-    Normalizes an assertion node by replacing numeric and string literals with placeholders.
-    Returns the normalized assertion code as a string.
-    """
     class LiteralReplacer(ast.NodeTransformer):
         def visit_Constant(self, node):
             if isinstance(node.value, (int, float)):
@@ -15,27 +10,20 @@ def normalize_assertion(node):
                 return ast.copy_location(ast.Name(id='STR', ctx=ast.Load()), node)
             else:
                 return node
-
         def visit_Num(self, node):  # For Python versions < 3.8
             return ast.copy_location(ast.Name(id='NUM', ctx=ast.Load()), node)
-
         def visit_Str(self, node):  # For Python versions < 3.8
             return ast.copy_location(ast.Name(id='STR', ctx=ast.Load()), node)
-
     replacer = LiteralReplacer()
     normalized_node = replacer.visit(node)
     ast.fix_missing_locations(normalized_node)
     return ast.unparse(normalized_node)
 
+# Extracts test functions from the provided file. Returns a list of dictionaries containing function names, normalized assertions, and the full function code.
 def extract_test_functions(file_path):
-    """
-    Extracts test functions from the provided file.
-    Returns a list of dictionaries containing function names, normalized assertions, and the full function code.
-    """
     with open(file_path, 'r', encoding='utf-8') as file:
         file_content = file.read()
         tree = ast.parse(file_content)
-
     test_functions = []
     for node in tree.body:
         if isinstance(node, ast.FunctionDef) and node.name.startswith('test'):
@@ -50,7 +38,6 @@ def extract_test_functions(file_path):
             assertions_sorted = sorted(normalized_assertions)
             assertions_str = '\n'.join(assertions_sorted)
             assertions_hash = hashlib.md5(assertions_str.encode('utf-8')).hexdigest()
-
             test_functions.append({
                 'name': node.name,
                 'assertions': assertions_sorted,
@@ -59,11 +46,8 @@ def extract_test_functions(file_path):
             })
     return test_functions
 
+# Merges two lists of test functions, removing duplicates based on the hash of their normalized assertion statements. Returns a list of merged test functions.
 def merge_test_functions(tests1, tests2):
-    """
-    Merges two lists of test functions, removing duplicates based on the hash of their normalized assertion statements.
-    Returns a list of merged test functions.
-    """
     merged_tests = tests1.copy()
     existing_hashes = {test['hash'] for test in merged_tests}
     duplicates = []
@@ -79,47 +63,37 @@ def merge_test_functions(tests1, tests2):
         print("No duplicate test functions found based on purpose.")
     return merged_tests
 
+# Extracts all import statements from a Python file. Returns a list of import statements as strings.
 def extract_imports(file_path):
-    """
-    Extracts all import statements from a Python file.
-    Returns a list of import statements as strings.
-    """
     with open(file_path, 'r', encoding='utf-8') as file:
         file_content = file.read()
         tree = ast.parse(file_content)
-
     imports = []
     for node in tree.body:
         if isinstance(node, (ast.Import, ast.ImportFrom)):
             imports.append(ast.get_source_segment(file_content, node))
     return imports
 
+# Merges two lists of import statements, removing duplicates.
 def merge_imports(imports_a, imports_b):
-    """
-    Merges two lists of import statements, removing duplicates.
-    """
     return list(dict.fromkeys(imports_a + imports_b))
 
+# Writes the merged imports and test functions to the output file.
 def write_merged_tests(imports, test_functions, output_file):
-    """
-    Writes the merged imports and test functions to the output file.
-    """
     with open(output_file, 'w', encoding='utf-8') as file:
         # Write imports
         for imp in imports:
             file.write(f"{imp}\n")
         file.write("\n")
-
         # Write test functions
         for test in test_functions:
             file.write(f"{test['code']}\n\n")
 
 def main():
     # Define file paths
-    test_file1 = 'II_code_test.py'
-    test_file2 = 'II_spec_test.py'
-    output_file = 'II_merged_tests.py'
-
+    test_file1 = 'TC_code/test_0101_code.py'
+    test_file2 = 'TC_spec/test_0101_spec.py'
+    output_file = 'TC_merge/test_0101_merge.py'
     # Check if input files exist
     if not os.path.exists(test_file1):
         print(f"File {test_file1} does not exist.")
@@ -127,19 +101,15 @@ def main():
     if not os.path.exists(test_file2):
         print(f"File {test_file2} does not exist.")
         return
-
     # Extract test functions
     tests1 = extract_test_functions(test_file1)
     tests2 = extract_test_functions(test_file2)
-
     # Merge test functions based on normalized assertion hashes
     merged_tests = merge_test_functions(tests1, tests2)
-
     # Extract and merge imports
     imports1 = extract_imports(test_file1)
     imports2 = extract_imports(test_file2)
     merged_imports = merge_imports(imports1, imports2)
-
     # Write merged tests to output file
     write_merged_tests(merged_imports, merged_tests, output_file)
     print(f"Merged test suite saved to {output_file}")
