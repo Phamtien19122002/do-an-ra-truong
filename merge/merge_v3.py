@@ -10,9 +10,9 @@ def normalize_assertion(node):
                 return ast.copy_location(ast.Name(id='STR', ctx=ast.Load()), node)
             else:
                 return node
-        def visit_Num(self, node):  # For Python versions < 3.8
+        def visit_Num(self, node):  
             return ast.copy_location(ast.Name(id='NUM', ctx=ast.Load()), node)
-        def visit_Str(self, node):  # For Python versions < 3.8
+        def visit_Str(self, node):  
             return ast.copy_location(ast.Name(id='STR', ctx=ast.Load()), node)
     replacer = LiteralReplacer()
     normalized_node = replacer.visit(node)
@@ -58,7 +58,7 @@ def merge_test_functions(tests1, tests2):
             merged_tests.append(test2)
             existing_hashes.add(test2['hash'])
     if duplicates:
-        print(f"Found duplicate test functions based on purpose: {duplicates}")
+        print(f"Found duplicate test functions based on purpose: \n{duplicates}")
     else:
         print("No duplicate test functions found based on purpose.")
     return merged_tests
@@ -79,21 +79,22 @@ def merge_imports(imports_a, imports_b):
     return list(dict.fromkeys(imports_a + imports_b))
 
 # Writes the merged imports and test functions to the output file.
-def write_merged_tests(imports, test_functions, output_file):
+def write_merged_tests(imports, test_functions, output_file, text):
     with open(output_file, 'w', encoding='utf-8') as file:
-        # Write imports
         for imp in imports:
             file.write(f"{imp}\n")
-        file.write("\n")
-        # Write test functions
+        for imp in text:
+            file.write(f"{imp}\n")        
         for test in test_functions:
             file.write(f"{test['code']}\n\n")
 
-def main():
-    # Define file paths
-    test_file1 = 'TC_code/test_0101_code.py'
-    test_file2 = 'TC_spec/test_0101_spec.py'
-    output_file = 'TC_merge/test_0101_merge.py'
+# Get function name from source code to use at spec_prompt 
+def get_function_name_from_code(code):
+    tree = ast.parse(code)
+    function_names = [node.name for node in ast.walk(tree) if isinstance(node, ast.FunctionDef)]
+    return function_names[0] if function_names else None
+
+def merge(test_file1, test_file2, output_file, text):
     # Check if input files exist
     if not os.path.exists(test_file1):
         print(f"File {test_file1} does not exist.")
@@ -111,8 +112,5 @@ def main():
     imports2 = extract_imports(test_file2)
     merged_imports = merge_imports(imports1, imports2)
     # Write merged tests to output file
-    write_merged_tests(merged_imports, merged_tests, output_file)
+    write_merged_tests(merged_imports, merged_tests, output_file, [text])
     print(f"Merged test suite saved to {output_file}")
-
-if __name__ == "__main__":
-    main()
