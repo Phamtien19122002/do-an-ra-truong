@@ -1,4 +1,5 @@
-Cho hai số nguyên dương X1, X2. Ta chỉ được phép thay đổi chữ số p thành chữ số q và ngược lại chữ. Hãy đưa ra tổng nhỏ nhất và tổng lớn nhất các số X1 và X2 được tạo ra theo nguyên tắc kể trên.
+Cho hai số nguyên dương X1, X2. Ta chỉ được phép thay đổi chữ số p thành chữ số q và ngược lại chữ. 
+Hãy đưa ra tổng nhỏ nhất và tổng lớn nhất các số X1 và X2 được tạo ra theo nguyên tắc kể trên.
 Input:
 2 ký tự đầu tiên ghi lại chữ số p và chữ số q, kế tiếp ghi lại các số X1 và X2 theo thứ tự (X1, X2 thỏa mãn ràng buộc: 0≤ X1, X2 ≤10^1000).
 Output:

@@ -18,5 +18,4 @@ def convert_to_base(s, n):
         else:
             result += c[tmp - 10]
         i += b
-    
     return result

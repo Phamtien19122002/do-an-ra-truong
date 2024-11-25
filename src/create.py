@@ -1,8 +1,7 @@
 import re, time
 from openai import OpenAI
-from merge.merge_v2 import merge_v2
 
-OPENAI_API_KEY = "sk-y-T1H3b8mBrjD_k-jyA6f0EuA_r7daKye1SM5bSB5XT3BlbkFJkBt0I3GYSMYXoViQCV91L4eZzvlDmlfIIdd9OB1Z8A"
+OPENAI_API_KEY = "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"
 client = OpenAI(api_key = OPENAI_API_KEY)
 
 def read_file(file_path):
