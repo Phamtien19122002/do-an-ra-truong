@@ -1,42 +1,32 @@
 import pytest
 from function.function_0101 import remaining_elements_count
 
-def test_single_element():
-    # Test case with a single element
+def test_remaining_elements_count_single_element():
     assert remaining_elements_count([5]) == 1
 
-def test_two_odd_elements():
-    # Test case with two odd elements
-    assert remaining_elements_count([3, 5]) == 2
-
-def test_two_even_elements():
-    # Test case with two even elements
+def test_remaining_elements_count_two_even_elements():
     assert remaining_elements_count([2, 4]) == 0
 
-def test_mixed_even_odd():
-    # Test case with a mix of even and odd elements
-    assert remaining_elements_count([1, 2, 3, 4]) == 2
+def test_remaining_elements_count_two_odd_elements():
+    assert remaining_elements_count([1, 3]) == 2
 
-def test_multiple_pairs_removal():
-    # Test case where multiple pairs will be removed
-    assert remaining_elements_count([2, 4, 1, 3, 6]) == 1
+def test_remaining_elements_count_mixed_even_odd():
+    assert remaining_elements_count([1, 2]) == 2
 
-def test_large_input_with_clusters():
-    # Test case for large input with clusters that lead to zero elements
-    assert remaining_elements_count([2, 2, 4, 4, 3, 3, 1]) == 1
+def test_remaining_elements_count_multiple_pairs_removal():
+    assert remaining_elements_count([2, 3, 4, 5]) == 2
 
-def test_minimum_boundary_condition():
-    # Test case with minimum allowable values
-    assert remaining_elements_count([1]) == 1
+def test_remaining_elements_count_no_removal():
+    assert remaining_elements_count([1, 2, 3]) == 3
 
-def test_maximum_boundary_condition():
-    # Test case with maximum value inserted 
-    assert remaining_elements_count([100] * 100000) == 0
+def test_remaining_elements_count_alternating_pairs():
+    assert remaining_elements_count([1, 2, 1, 2]) == 2
 
-def test_consecutive_even_odd():
-    # Test case with a consecutive sequence of odd and even
-    assert remaining_elements_count([2, 3, 4, 1]) == 2
+def test_remaining_elements_count_large_input():
+    assert remaining_elements_count([1]*100000) == 100000
 
-def test_all_odd():
-    # Test case with all odd numbers
-    assert remaining_elements_count([1, 3, 5, 7]) == 4
+def test_remaining_elements_count_boundary_even_odd():
+    assert remaining_elements_count([100, 1]) == 2
+
+def test_remaining_elements_count_consecutive_removal():
+    assert remaining_elements_count([2, 2, 2]) == 0
