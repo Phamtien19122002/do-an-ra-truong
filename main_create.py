@@ -1,8 +1,9 @@
 import re, os
 import subprocess
 from openai import OpenAI
+from main_merge import *
 
-OPENAI_API_KEY = "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"
+OPENAI_API_KEY = "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"
 client = OpenAI(api_key = OPENAI_API_KEY)
 
 def prompt_code(function_name, import_function, code):
@@ -23,6 +24,32 @@ def prompt_spec(function_name, import_function, spec):
         "- Focus on a specific scenario and have a name that reflects its objective.\n"
         "- Utilize boundary analysis and equivalence partitioning techniques to ensure high coverage.\n"
         f"- Include assert statements to verify the conditions with exist function name is '{function_name}' that imported from '{import_function}'.\n"
+        "- Each test function have only 1 test case.\n"
+        "- Respond ONLY with the Python code enclosed in backticks, without any explanation.\n"
+        "- Write as little top-level code as possible, and in particular do not include any top-level code calling into pytest.main or the test itself.\n"
+        f"For spec below:\n {spec}"
+    )
+
+def prompt_codei(function_path, code):
+    function_name = get_function_name_from_code(code)
+    return ("You are a professional Python developer. Create pytest test functions for a specific functionality based on the code below.\n"
+        "Each test function should:\n"
+        "- Focus on a specific scenario and have a name that reflects its objective.\n"
+        "- Utilize boundary analysis and equivalence partitioning techniques to ensure high coverage.\n"
+        f"- Include assert statements to verify the conditions with exist function name is '{function_name}' that imported from 'code_{function_path}'.\n"
+        "- Respond ONLY with the Python code enclosed in backticks, without any explanation.\n"
+        "- Write as little top-level code as possible, and in particular do not include any top-level code calling into pytest.main or the test itself.\n"
+        "- Ensure that each test function contains only 1 test case.\n"
+        f"{code}")
+
+def prompt_speci(function_path, spec, code):
+    function_name = get_function_name_from_code(code)
+    return (
+        "You are a professional Python tester. Create pytest test functions for a specific functionality based on the specification.\n"
+        "Each test function should:\n"
+        "- Focus on a specific scenario and have a name that reflects its objective.\n"
+        "- Utilize boundary analysis and equivalence partitioning techniques to ensure high coverage.\n"
+        f"- Include assert statements to verify the conditions with exist function name is '{function_name}' that imported from 'code_{function_path}'.\n"
         "- Each test function have only 1 test case.\n"
         "- Respond ONLY with the Python code enclosed in backticks, without any explanation.\n"
         "- Write as little top-level code as possible, and in particular do not include any top-level code calling into pytest.main or the test itself.\n"
@@ -66,7 +93,8 @@ def generate_test(prompt):
 def convert_function_path(function_path):
     directory, file_name = os.path.split(function_path)
     file_name_without_extension = os.path.splitext(file_name)[0]
-    function_name = directory.replace('/', '.') + '.' + file_name_without_extension
+    # function_name = directory.replace('/', '.') + '.' + file_name_without_extension
+    function_name = directory.replace('/', '.') + file_name_without_extension
     return function_name
 
 def print_red(text):
@@ -84,10 +112,7 @@ def estimate(test_file, reseach_line):
         misses = missed_lines(result.stdout, reseach_line)
         if misses:
             return misses
-
     except subprocess.CalledProcessError as e:
-        # print("Nếu có test case sai sẽ in dòng này!")
-        print(e.returncode)
         print(e.stdout)
         misses = missed_lines(e.stdout, reseach_line)
         if misses:

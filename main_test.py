@@ -1,7 +1,7 @@
 from main_create import *
 from main_merge import *
 
-def generate_and_estimate(function_path, spec_path, merge_path):
+def generate_and_estimate(function_path="./default.py", spec_path="./default.txt", merge_path="./default.py"):
     code = read_file(function_path)
     spec = read_file(spec_path)
     function_name = get_function_name_from_code(code)
@@ -59,4 +59,4 @@ if __name__ == "__main__":
     function_path = "function/function_0101.py"
     spec_path = "spec/spec_0101"
     merge_path = "TC_merge/merge_0101.py"
-    generate_and_estimate(function_path, spec_path, merge_path)
+    generate_and_estimate(function_path)
