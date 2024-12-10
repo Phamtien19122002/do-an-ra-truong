@@ -17,7 +17,12 @@ Một số công nghệ được sử dụng:
 - Tùy chỉnh cho hợp lý (trái -> phải, trên - dưới)		=> Done
 - Insert từ file 						                => Done
 - Tree code: trường bắt buộc					        => Không cần thiết -> thông báo
-- Input/generated input/generated ouput/ giống||khác 	=> 
-- Additional (thống kê tổng pass/fail - slipcover)		=> 
+- Input/generated input/generated ouput/ giống||khác 	=> Done
+- Additional (thống kê tổng pass/fail - slipcover)		=> Done 
 3. Viết documentation						            => 
 4. Chạy độ phủ thử nghiệm					            => 
+
+12/10/2024
+1. Write function to update wrong TCs generated from step 2 with spec, and error message that I received after run slipcover technical.
+2. After TCs merged from spec's TC and code's TC, then run the slipcover to measure the coverage of the TCs and display the statistics.
+3. Redecorate the interface. 
