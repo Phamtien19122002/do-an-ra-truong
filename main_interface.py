@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
 from src.main_create import *
-from src.main_merge import *
 from src.main_tkinter import *
 
 def button_spec_handler():

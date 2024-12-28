@@ -1,8 +1,7 @@
-import re, subprocess
+import re, subprocess, ast, os
 from openai import OpenAI
-from src.main_merge import *
 
-OPENAI_API_KEY = "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"
+OPENAI_API_KEY = "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"
 client = OpenAI(api_key = OPENAI_API_KEY)
 
 def prompt_code(name, code):
@@ -42,15 +41,6 @@ def prompt_miss(function_name, import_function, missed_lines, code):
         "- Respond ONLY with the Python code enclosed in backticks, WITHOUT explanation.\n"
         "- Ensure that each test function contains only 1 test case.\n"
     )
-
-# def prompt_wrong(spec, wrong, tc):
-#     return (
-#         f"Given the following spec: '{spec}'\n and the test cases below: \n{tc} and after running the tests, there are some failed cases as shown below: \n{wrong} \n" 
-#         "Can you review the failed cases to check if the 'expected output' of each case aligns with the spec? "
-#         "If the 'expected output' of the failed cases is correct according to the specifications, or the case passed, leave it unchanged. "
-#         "If the 'expected output' of the failed cases is incorrect according to the spec, update the 'expected output' for those cases in the test suite and send back the updated test suite to me. "
-#         "Please only modify the 'expected output' for the failed cases that are incorrect according to the spec, and don't change anything else. Additionally, mark each updated test case with '#update' next to the test function name."
-#     )
 
 def prompt_wrong(spec, wrong, tc):
     return (
@@ -148,3 +138,99 @@ def update_wrong(tc, path):
     with open(path, "w", encoding="utf-8") as file:
         file.write(tc + "\n")
     print_red(f"===> Updated in {path}.")
+
+# merge functions is here
+def get_function_name_from_code(code):
+    tree = ast.parse(code)
+    function_names = [node.name for node in ast.walk(tree) if isinstance(node, ast.FunctionDef)]
+    return function_names[0] if function_names else None
+
+def extract_imports(file_path):
+    with open(file_path, 'r', encoding='utf-8') as file:
+        file_content = file.read()
+        tree = ast.parse(file_content)
+    imports = []
+    for node in tree.body:
+        if isinstance(node, (ast.Import, ast.ImportFrom)):
+            imports.append(ast.get_source_segment(file_content, node))
+    return imports
+
+def merge_imports(imports_a, imports_b):
+    return list(dict.fromkeys(imports_a + imports_b))
+
+def get_coverage(file_path):
+    try:
+        lines = slipcover(file_path).splitlines()
+        for line in lines:
+            if line.strip().startswith("code_") and ".py" in line:
+                parts = line.split()
+                if len(parts) >= 3:
+                    try:
+                        return float(parts[3].strip('%'))  # Trả về phần trăm độ phủ
+                    except (ValueError, IndexError):
+                        return 0.0
+    except Exception as e:
+        print(f"Error running slipcover: {e}")
+    return 0.0
+
+def extract_tests(lines):
+        tests = []
+        inside_test = False
+        current_test = []
+        for line in lines:
+            if line.strip().startswith("def test_"):  # Bắt đầu một hàm test mới
+                if current_test:  # Nếu đang có một test case trước đó, lưu lại
+                    tests.append("".join(current_test))
+                current_test = [line]
+                inside_test = True
+            elif inside_test:  # Nếu đang trong một hàm test, tiếp tục lưu nội dung
+                if line.strip() == "":  # Kết thúc hàm test khi gặp dòng trống
+                    inside_test = False
+                    tests.append("".join(current_test))
+                    current_test = []
+                else:
+                    current_test.append(line)
+        if current_test:  # Thêm test case cuối cùng (nếu có)
+            tests.append("".join(current_test))
+        return tests
+
+def merge_tc(file1, file2, output_file):
+    with open(file1, "r") as f1, open(file2, "r") as f2:
+        tests_1 = f1.readlines()
+        tests_2 = f2.readlines()
+
+    imports1 = extract_imports(file1)
+    imports2 = extract_imports(file2)
+    imports = merge_imports(imports1, imports2)
+
+    merged_tests = []
+    temp_file = "temp_merged_tests.py"
+
+    tests_1_extracted = extract_tests(tests_1)
+    tests_2_extracted = extract_tests(tests_2)
+    merged_tests = tests_1_extracted + tests_2_extracted
+    # for i in merged_tests:
+    #     print(i)
+    final_tests = []
+    for test in merged_tests:
+        coverage_before = get_coverage(temp_file)
+        with open(temp_file, "w") as temp:
+            for i in imports:
+                temp.write(i + "\n")
+            temp.writelines(final_tests)
+            temp.write("\n")
+            temp.write(test)
+        coverage_after = get_coverage(temp_file)
+        if coverage_after > coverage_before:
+            final_tests.append(test)
+        if coverage_after == 100.0:
+            break
+    with open(output_file, "w") as out_file:
+        for i in imports:
+            out_file.write(i + "\n")
+        out_file.write("\n")
+        for i in final_tests:
+            out_file.write(i + "\n")
+    if os.path.exists(temp_file):
+        os.remove(temp_file)
+    print_red(f"=>>> Merged test cases saved to {output_file}.")

@@ -1,8 +1,7 @@
 import tkinter as tk
-import importlib, time
+import importlib, time, os
 from tkinter import messagebox, filedialog
 from src.main_create import *
-from src.main_merge import *
 
 def open_file(text_widget):
     file_path = filedialog.askopenfilename(
@@ -153,7 +152,7 @@ def button_code(name, code, tree, slip):
 def button_merge(name, tree, slip):
     start = time.time()
     tc_path = f"TC_merge/merge_{name}_tc.py"
-    merge(f"TC_spec/spec_{name}_tc.py", f"TC_function/code_{name}_tc.py", tc_path)
+    merge_tc(f"TC_spec/spec_{name}_tc.py", f"TC_function/code_{name}_tc.py", tc_path)
     tg = f"{(time.time()-start):.2f}s"
     display_test_case(tc_path, tree)
     display_pass_fail(tc_path, slip, tg)
