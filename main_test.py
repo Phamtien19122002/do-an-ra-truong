@@ -1,4 +1,4 @@
-from main_create import *
+from src.main_create import *
 
 name = "0101"
 failure = extract_wrong(f"TC_merge/merge_{name}_tc.py")

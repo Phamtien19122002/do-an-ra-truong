@@ -1,0 +1,33 @@
+Hàm calculate_income_tax được thiết kế để tính toán số tiền thuế thu nhập cá nhân phải nộp dựa trên mức thu nhập của một cá nhân. Thuế được tính theo các mức thu nhập khác nhau với các tỷ lệ thuế khác nhau.
+Đầu vào:
+income (số thực hoặc số nguyên): Thu nhập của cá nhân cần tính thuế. Giá trị này có thể là số âm, số 0, hoặc số dương.
+Đầu ra
+Trả về một số thực hoặc số nguyên đại diện cho số tiền thuế phải nộp.
+Điều kiện và Quy tắc
+1. Thu nhập không hợp lệ:
+Nếu income nhỏ hơn hoặc bằng 0, thuế phải nộp là 0.
+2. Mức thu nhập từ 0 đến 5,000:
+Thuế suất: 5%
+Công thức: income * 0.05
+3. Mức thu nhập từ 5,001 đến 10,000:
+Thuế suất cho phần thu nhập từ 0 đến 5,000: 5%
+Thuế suất cho phần thu nhập từ 5,001 đến 10,000: 10%
+Công thức: 5000 * 0.05 + (income - 5000) * 0.1
+4. Mức thu nhập từ 10,001 đến 20,000:
+Thuế suất cho phần thu nhập từ 0 đến 5,000: 5%
+Thuế suất cho phần thu nhập từ 5,001 đến 10,000: 10%
+Thuế suất cho phần thu nhập từ 10,001 đến 20,000: 15%
+Công thức: 5000 * 0.05 + 5000 * 0.1 + (income - 10000) * 0.15
+5. Mức thu nhập từ 20,001 đến 50,000:
+Thuế suất cho phần thu nhập từ 0 đến 5,000: 5%
+Thuế suất cho phần thu nhập từ 5,001 đến 10,000: 10%
+Thuế suất cho phần thu nhập từ 10,001 đến 20,000: 15%
+Thuế suất cho phần thu nhập từ 20,001 đến 50,000: 20%
+Công thức: 5000 * 0.05 + 5000 * 0.1 + 10000 * 0.15 + (income - 20000) * 0.2
+6. Mức thu nhập trên 50,000:
+Thuế suất cho phần thu nhập từ 0 đến 5,000: 5%
+Thuế suất cho phần thu nhập từ 5,001 đến 10,000: 10%
+Thuế suất cho phần thu nhập từ 10,001 đến 20,000: 15%
+Thuế suất cho phần thu nhập từ 20,001 đến 50,000: 20%
+Thuế suất cho phần thu nhập trên 50,000: 25%
+Công thức: 5000 * 0.05 + 5000 * 0.1 + 10000 * 0.15 + 30000 * 0.2 + (income - 50000) * 0.25

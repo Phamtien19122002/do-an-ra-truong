@@ -94,12 +94,9 @@ def merge(test_file1, test_file2, output_file):
         return
     tests1 = extract_test_functions(test_file1)
     tests2 = extract_test_functions(test_file2)
-    # Merge test functions based on normalized assertion hashes
     merged_tests = merge_test_functions(tests1, tests2)
-    # Extract and merge imports
     imports1 = extract_imports(test_file1)
     imports2 = extract_imports(test_file2)
     merged_imports = merge_imports(imports1, imports2)
-    # Write merged tests to output file
     write_merged_tests(merged_imports, merged_tests, output_file)
     print(f"Merged test suite saved to {output_file}")
