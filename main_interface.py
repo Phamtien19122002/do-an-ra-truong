@@ -50,7 +50,7 @@ def button_merge_handler():
         txt_merge.pack_forget()  
 
 root = tk.Tk()
-root.geometry("1250x990")
+root.geometry("1250x960")
 root.title("Generate Unit test using LLM!")
 
 path_frame = tk.Frame(root)

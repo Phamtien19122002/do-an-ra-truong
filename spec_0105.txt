@@ -1,3 +1,0 @@
-Cho xâu ký tự có độ dài n bao gồm các ký tự từ ‘a’, ‘b’, …, ‘z’ và các số từ 0 đến 9. Nhiệm vụ của bạn là tìm số lớn nhất xuất hiện trong xâu. Ví dụ với xâu X[]=”12ab29cd19” ta có kết quả là 29.
-Input: Mỗi test là một xâu ký tự thỏa mãn yêu cầu bài toán (1≤n≤10^5), dữ liệu vào đảm bảo số lớn nhất cũng không quá 18 chữ số
-Output: Đưa ra kết quả mỗi test theo từng dòng.

@@ -1,7 +1,7 @@
 import re, subprocess, ast, os
 from openai import OpenAI
 
-OPENAI_API_KEY = "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"
+OPENAI_API_KEY = "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"
 client = OpenAI(api_key = OPENAI_API_KEY)
 
 def prompt_code(name, code):
@@ -178,19 +178,19 @@ def extract_tests(lines):
         inside_test = False
         current_test = []
         for line in lines:
-            if line.strip().startswith("def test_"):  # Bắt đầu một hàm test mới
-                if current_test:  # Nếu đang có một test case trước đó, lưu lại
+            if line.strip().startswith("def test_"): 
+                if current_test:  
                     tests.append("".join(current_test))
                 current_test = [line]
                 inside_test = True
-            elif inside_test:  # Nếu đang trong một hàm test, tiếp tục lưu nội dung
-                if line.strip() == "":  # Kết thúc hàm test khi gặp dòng trống
+            elif inside_test: 
+                if line.strip() == "":  
                     inside_test = False
                     tests.append("".join(current_test))
                     current_test = []
                 else:
                     current_test.append(line)
-        if current_test:  # Thêm test case cuối cùng (nếu có)
+        if current_test: 
             tests.append("".join(current_test))
         return tests
 
