@@ -1,7 +1,7 @@
 import re, subprocess, ast, os
 from openai import OpenAI
 
-OPENAI_API_KEY = "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"
+OPENAI_API_KEY = "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"
 client = OpenAI(api_key = OPENAI_API_KEY)
 
 def prompt_code(name, code):
@@ -25,7 +25,7 @@ def prompt_spec(name, spec, code):
         "- Utilize boundary analysis and equivalence partitioning techniques to ensure high coverage.\n"
         "- Each test function have only 1 test case.\n"
         "- Respond only with the Python code enclosed in backticks, without any explanation.\n"
-        "- Write as little top-level code as possible, and in particular do not include any top-level code  calling into pytest.main or the test itself.\n"
+        "- Write as little top-level code as possible, and in particular do not include any top-level code calling into pytest.main or the test itself.\n"
         f"- Include assert statements to verify the conditions using the existing function '{function_name}', which is imported from 'code_{name}'.\n"
         f"For spec below:\n {spec}"
     )
